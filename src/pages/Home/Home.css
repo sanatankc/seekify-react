@@ -1,0 +1,72 @@
+@keyframes starsAnimate {
+  0% {fill:#5f31a8}
+  16.66% { fill: #C05146 }
+  33.32% { fill: #FFC91D }
+  49.98% {fill: #35A7FF}
+  66.64% {fill: #33CC66}
+  83.3% {fill: #FF76B4}
+  100% {fill:#5f31a8}
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: #250e49;
+  margin: 0;
+  padding: 0;
+}
+.stars-container {
+  position: relative;
+  top: -5px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.stars-svg-path {
+  fill: #5f31a8;
+  animation: starsAnimate 20s linear infinite;
+}
+
+.main-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  color: #fff;
+  width: 360px;
+  margin-top: 15px;
+  font-family: Calibre;
+  font-size: 20px;
+  line-height: 19px;
+  text-align: center;
+}
+
+.lets-go-button {
+  width: 281px;
+  height: 53.38px;
+  background-color: #440381;
+  border-radius: 26.7px;
+  margin-top: 15px;
+  font-family: Calibre;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  box-shadow: 0px 7.6px #501DA0;
+  cursor: pointer;
+  transition: 0.2s box-shadow ease-in-out;
+  font-family: Calibre;
+  font-size: 20px;
+}
+
+.lets-go-button:hover {
+  box-shadow: 0px 5px #501DA0;
+}

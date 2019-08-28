@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@font-face {
+    font-family: 'Calibre';
+    src: url('./fonts/CalibreTest-Regular.woff2') format('woff2'),
+        url('./fonts/CalibreTest-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibre';
+    src: url('./fonts/CalibreTest-Medium.woff2') format('woff2'),
+        url('./fonts/CalibreTest-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Calibre';
+    src: url('./fonts/CalibreTest-Bold.woff2') format('woff2'),
+        url('./fonts/CalibreTest-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+

@@ -1,0 +1,22 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #140828;
+}
+.paddle-overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.paddle {
+  position: absolute;
+  background-color: #ffff;
+  bottom: 40px;
+}
+.stars-overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
