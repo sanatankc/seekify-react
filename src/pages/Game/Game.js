@@ -5,7 +5,7 @@ import Star from "./Star";
 import { TaskTimer } from 'tasktimer'
 import TimeAndScore from './TimeAndScore'
 
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -23,14 +23,14 @@ class Game extends Component {
   paddleHeight = mapScale(
     {
       from: [1920, 375],
-      to: [30, 16]
+      to: [24, 16]
     },
     window.innerWidth
   )
   paddleWidth =  mapScale(
     {
       from: [1920, 375],
-      to: [656, 152]
+      to: [400, 152]
     },
     window.innerWidth
   )
@@ -42,11 +42,11 @@ class Game extends Component {
     window.innerWidth
   ) / 152) * 8
   starProperties = [
-    { name: 'red', score: 500 },
-    { name: 'yellow', score: 400 },
-    { name: 'blue', score: 300 },
-    { name: 'green', score: 200 },
-    { name: 'pink', score: 100 },
+    { name: 'red', score: 500, starSize: 60 },
+    { name: 'yellow', score: 400, starSize: 80 },
+    { name: 'blue', score: 300, starSize: 88 },
+    { name: 'green', score: 200, starSize: 105 },
+    { name: 'pink', score: 100, starSize: 121 },
 
   ]
 
@@ -91,27 +91,41 @@ class Game extends Component {
     this.startTimer()
   }
 
+  getDuration(tick) {
+    if (tick < 10) {
+      return 4000
+    } else if (tick > 10) {
+      return 2000
+    }
+  }
   startTimer() {
-    const starSize = mapScale(
-    {
-      from: [1920, 375],
-      to: [60, 22]
-    },
-    window.innerWidth
-  )
     this.timer = new TaskTimer(1000);
+    const blackListTicks = [10, 11, 29, 30]
     this.timer.on('tick', () => {
+      const star = this.starProperties[getRandomInt(0, 4)]
+      const starSize = mapScale(
+      {
+        from: [1920, 375],
+        to: [star.starSize, 22 / 60 * star.starSize]
+      },
+        window.innerWidth
+      )
+      const starCount = getRandomInt(1,3)
       this.setState({ tick: this.timer.tickCount })
-      if (this.timer.tickCount === 60) this.timer.stop()
-      if (this.timer.tickCount % 2 === 1 && this.timer.tickCount < 56) {
-        const pos = getRandomInt(0, window.innerWidth - starSize * 3)
+      if (this.timer.tickCount === 30) this.timer.stop()
+      if ((this.timer.tickCount % 2 === 1 || this.timer.tickCount > 10) && !blackListTicks.includes(this.timer.tickCount)) {
+        const pos = getRandomInt(0, window.innerWidth - starSize * starCount)
         this.setState(prev => ({
           stars:
           [...prev.stars, {
             key: this.nextKey,
             pos,
-            property: this.starProperties[getRandomInt(0, 4)],
-            count: [getRandomInt(1,3)]
+            property: {
+              ...star,
+              duration: this.getDuration(this.timer.tickCount),
+              angularMovement: this.timer.tickCount > 18
+            },
+            count: starCount
           }]
         }))
         this.nextKey += 1
@@ -123,6 +137,7 @@ class Game extends Component {
   collectStar = score => {
     this.setState(prev => ({ score: prev.score + score }))
   }
+
   shouldCollectedByPaddle = (starY1, starY2) => {
     // On paddle
     if (starY1 >= this.currentPaddleTransform && starY2 <= this.currentPaddleTransform + this.paddleWidth) {

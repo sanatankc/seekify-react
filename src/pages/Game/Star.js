@@ -1,62 +1,117 @@
-import React from 'react'
-import { tween, styler, easing, keyframes } from 'popmotion'
+import React, { Component } from 'react'
+import { tween, styler, easing, keyframes, physics } from 'popmotion'
 import './Star.css'
 import { ReactComponent as StarSVG } from './Star.svg'
 import mapScale from './mapScale'
+import { getRandomInt } from './Game';
 
-const Star = props => {
-  const starSize = mapScale(
+const convertRadian = angle => angle * Math.PI / 180
+
+class Star extends Component {
+  starSize = mapScale(
     {
       from: [1920, 375],
-      to: [60, 22]
+      to: [this.props.star.property.starSize, 22 / 60 * this.props.star.property.starSize]
     },
     window.innerWidth
-  )
+    )
+    isAnimating = true
+    isBlinking = false
+    blinkAnimated = {}
+    blinkAnimation = keyframes({ values: [0, 1, 0], duration: 300, flip: Infinity })
 
-  React.useEffect(() => {
-    const elem = document.getElementById(props.id)
-    const star = styler(elem)
-    const blinkAnimation = keyframes({ values: [0, 1, 0], duration: 300, flip: Infinity })
-    let blinkAnimated
-    let isBlinking = false
-    const {innerHeight} =  window
+    componentDidMount() {
+      const elem = document.getElementById(this.props.id)
+      this.star = styler(elem)
+      this.x = 0
+      this.y = -this.starSize
+      this.innerHeight = window.innerHeight
+      this.velocityPerFrame = (this.innerHeight / (this.props.star.property.duration / 1000)) / 60
+      this.angle = this.props.star.property.angularMovement ? [getRandomInt(30, 70), getRandomInt(110, 150)][getRandomInt(0, 1)] : 90
+      this.dx = Math.cos(convertRadian(this.angle)) * this.velocityPerFrame
+      this.dy = Math.sin(convertRadian(this.angle)) * this.velocityPerFrame
+      this.animate()
+    }
 
-    let movingStar = tween({from: -starSize, to: innerHeight - 40 - 2, duration: 5000, ease: easing.linear })
-      .start(v => {
-        star.set('y', v)
-        if (v > innerHeight - 40 - (starSize + props.paddleHeight) - 100 && !isBlinking) {
-          blinkAnimated = blinkAnimation.start(o => {
-            star.set('opacity', o)
-          })
-          isBlinking = true
+    animate = () => {
+      let {
+        star,
+        isAnimating,
+        x,
+        y,
+        dx,
+        dy,
+        angle,
+        props,
+        starSize,
+        isBlinking,
+        blinkAnimated,
+        blinkAnimation,
+        innerHeight
+      } = this
+
+      if (isAnimating) {
+        star.set('y', y)
+        star.set('x', x)
+
+        // blink on close
+        if (y > innerHeight - 40 - (starSize + props.paddleHeight) - 100 && !isBlinking) {
+            this.blinkAnimated = blinkAnimation.start(o => {
+              star.set('opacity', o)
+            })
+            this.isBlinking = true
         }
-        if (v > innerHeight - 40 - (starSize + props.paddleHeight)) {
-          if (props.shouldCollectedByPaddle(props.star.pos, props.star.pos + starSize * props.star.count)) {
+
+        if (y > innerHeight - 40 - (starSize + props.paddleHeight)) {
+
+          if (props.shouldCollectedByPaddle(props.star.pos + x, x + props.star.pos + starSize * props.star.count)) {
+
             blinkAnimated.stop()
             star.set('opacity', 1)
-            movingStar.stop()
+            this.isAnimating = false
             props.collectStar(props.star.property.score * props.star.count)
             tween({ from: 1, to: 0, duration: 400, ease: easing.anticipate }).start(o => {
               star.set({'opacity': o})
             })
           }
         }
-        if (v >= innerHeight - 40 - 2) {
+
+        if (y >= innerHeight - starSize) {
           blinkAnimated.stop()
           star.set('opacity', 1)
+          this.isAnimating = false
         }
 
-      });
-  }, [])
+        // bounce
+        if (
+          (x + props.star.pos) > window.innerWidth - (starSize * props.star.count) ||
+          (x + props.star.pos) < 0
+        ) {
+          console.log('before', angle, dx, dy, x, y)
+          this.angle = 180 - angle
+          this.dx = Math.cos(convertRadian(this.angle)) * this.velocityPerFrame
+          this.dy = Math.sin(convertRadian(this.angle)) * this.velocityPerFrame
+          console.log('after', angle, dx, dy, x, y)
+        }
 
-  return (
-    <div style={{ position: 'absolute', left: props.star.pos, display: 'flex', transform: `translateY(-${starSize}px)` }} id={props.id}>
-      {Array.from('_'.repeat(props.star.count)).map(() => (
-        <div style={{ width: starSize, height: starSize}}>
-          <StarSVG className={`${props.star.property.name}-star`} />
+        this.x += this.dx
+        this.y += this.dy
+        requestAnimationFrame(this.animate)
+      }
+    }
+
+    render() {
+      const { props, starSize } = this
+      return (
+        <div style={{ position: 'absolute', left: props.star.pos, display: 'flex' }} id={props.id}>
+          {Array.from('_'.repeat(props.star.count)).map((_, i) => (
+            <div style={{ width: starSize, height: starSize}} key={props.star.key + i}>
+              <StarSVG className={`${props.star.property.name}-star`} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  )
+      )
+    }
 }
+
 export default Star
