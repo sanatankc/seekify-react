@@ -88,7 +88,7 @@ class Star extends Component {
     render() {
       const { props, starSize } = this
       return (
-        <div style={{ position: 'absolute', left: props.star.pos, display: 'flex' }} id={props.id}>
+        <div style={{ position: 'absolute', left: props.star.pos, display: 'flex', transform: `translateY(-${starSize})px` }} id={props.id}>
           {Array.from('_'.repeat(props.star.count)).map((_, i) => (
             <div style={{ width: starSize, height: starSize}} key={props.star.key + i}>
               <StarSVG className={`${props.star.property.name}-star`} />
