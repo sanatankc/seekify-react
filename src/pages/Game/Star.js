@@ -54,20 +54,9 @@ class Star extends Component {
         star.set('y', y)
         star.set('x', x)
 
-        // blink on close
-        if (y > innerHeight - 40 - (starSize + props.paddleHeight) - 100 && !isBlinking) {
-            this.blinkAnimated = blinkAnimation.start(o => {
-              star.set('opacity', o)
-            })
-            this.isBlinking = true
-        }
-
         if (y > innerHeight - 40 - (starSize + props.paddleHeight)) {
 
           if (props.shouldCollectedByPaddle(props.star.pos + x, x + props.star.pos + starSize * props.star.count)) {
-
-            blinkAnimated.stop()
-            star.set('opacity', 1)
             this.isAnimating = false
             props.collectStar(props.star.property.score * props.star.count)
             tween({ from: 1, to: 0, duration: 400, ease: easing.anticipate }).start(o => {
@@ -77,8 +66,6 @@ class Star extends Component {
         }
 
         if (y >= innerHeight - starSize) {
-          blinkAnimated.stop()
-          star.set('opacity', 1)
           this.isAnimating = false
         }
 
@@ -87,11 +74,9 @@ class Star extends Component {
           (x + props.star.pos) > window.innerWidth - (starSize * props.star.count) ||
           (x + props.star.pos) < 0
         ) {
-          console.log('before', angle, dx, dy, x, y)
           this.angle = 180 - angle
           this.dx = Math.cos(convertRadian(this.angle)) * this.velocityPerFrame
           this.dy = Math.sin(convertRadian(this.angle)) * this.velocityPerFrame
-          console.log('after', angle, dx, dy, x, y)
         }
 
         this.x += this.dx

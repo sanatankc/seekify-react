@@ -41,6 +41,7 @@ class Game extends Component {
     },
     window.innerWidth
   ) / 152) * 8
+
   starProperties = [
     { name: 'red', score: 500, starSize: 60 },
     { name: 'yellow', score: 400, starSize: 80 },
@@ -64,12 +65,12 @@ class Game extends Component {
     });
     window.addEventListener("keydown", e => {
       if (e.key === "ArrowLeft") {
-        this.currentPaddleTransform = this.currentPaddleTransform - 50;
+        this.currentPaddleTransform = this.currentPaddleTransform - (paddleWidth / 2);
         if (this.currentPaddleTransform <= 0) this.currentPaddleTransform = 0;
         paddle.style.transform = `translateX(${this.currentPaddleTransform}px)`;
       }
       if (e.key === "ArrowRight") {
-        this.currentPaddleTransform = this.currentPaddleTransform + 50;
+        this.currentPaddleTransform = this.currentPaddleTransform + (paddleWidth / 2);
         if (this.currentPaddleTransform > window.innerWidth - paddleWidth)
           this.currentPaddleTransform = window.innerWidth - paddleWidth;
         paddle.style.transform = `translateX(${this.currentPaddleTransform}px)`;
@@ -110,10 +111,10 @@ class Game extends Component {
       },
         window.innerWidth
       )
-      const starCount = getRandomInt(1,3)
+      const starCount = [1,1,1,1,1,1,2,2,3,3][getRandomInt(0,9)]
       this.setState({ tick: this.timer.tickCount })
       if (this.timer.tickCount === 30) this.timer.stop()
-      if ((this.timer.tickCount % 2 === 1 || this.timer.tickCount > 10) && !blackListTicks.includes(this.timer.tickCount)) {
+      if (!blackListTicks.includes(this.timer.tickCount)) {
         const pos = getRandomInt(0, window.innerWidth - starSize * starCount)
         this.setState(prev => ({
           stars:
