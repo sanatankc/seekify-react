@@ -29,10 +29,10 @@ class TimeAndScore extends Component {
 }
 const styles = {
   timeOrScoreBoxStyle: {
-    width: scale(215, 1, 50),
-    height: scale(90, 1, 20),
-    borderRadius: scale(10, 1),
-    fontSize: scale(60, 1, 13),
+    width: scale(215, 1, 100),
+    height: scale(90, 1, 40),
+    borderRadius: scale(10, 1, 5),
+    fontSize: scale(60, 1, 26),
     backgroundColor: '#2C1058',
     display: 'flex',
     justifyContent: 'center',
@@ -49,7 +49,7 @@ const styles = {
   },
   text: {
     position: 'relative',
-    top: scale(7, 1, 2)
+    top: scale(7, 1, 4)
   }
 }
 export default TimeAndScore

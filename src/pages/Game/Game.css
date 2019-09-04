@@ -1,12 +1,8 @@
-.container {
-  width: 100vw;
-  height: 100vh;
+.game-container {
   background-color: #140828;
 }
 .paddle-overlay {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
   overflow: hidden;
 }
 .paddle {
@@ -16,7 +12,5 @@
 }
 .stars-overlay {
   position: absolute;
-  width: 100vw;
-  height: 100vh;
   overflow: hidden;
 }

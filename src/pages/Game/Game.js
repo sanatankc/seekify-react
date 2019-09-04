@@ -3,6 +3,7 @@ import mapScale from './mapScale'
 import "./Game.css";
 import Star from "./Star";
 import { TaskTimer } from 'tasktimer'
+import Hammer from 'hammerjs'
 import TimeAndScore from './TimeAndScore'
 
 export function getRandomInt(min, max) {
@@ -63,6 +64,16 @@ class Game extends Component {
       this.currentPaddleTransform = clientX;
       paddle.style.transform = `translateX(${this.currentPaddleTransform}px)`;
     });
+    window.addEventListener("touchmove", e => {
+      let { clientX } = e.touches[0];
+      if (clientX > window.innerWidth - paddleWidth / 2)
+        clientX = window.innerWidth - paddleWidth;
+      else if (clientX < paddleWidth / 2) clientX = 0;
+      else clientX = clientX - paddleWidth / 2;
+      this.currentPaddleTransform = clientX;
+      paddle.style.transform = `translateX(${this.currentPaddleTransform}px)`;
+    });
+
     window.addEventListener("keydown", e => {
       if (e.key === "ArrowLeft") {
         this.currentPaddleTransform = this.currentPaddleTransform - (paddleWidth / 2);
@@ -88,6 +99,11 @@ class Game extends Component {
         this.timer.pause()
         console.log('blur', this.timer.state)
       }
+    })
+
+    const hammer = new Hammer(document.querySelector('.game-container'))
+    hammer.on('pan', (evt) => {
+      console.log(evt)
     })
     this.startTimer()
   }
@@ -158,8 +174,8 @@ class Game extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="stars-overlay">
+      <div className="game-container" style={{ width: '100%', height: window.innerHeight }}>
+        <div className="stars-overlay" style={{ width: '100%', height: window.innerHeight }} >
         {this.state.stars.map(star => (
           <Star
             paddleHeight={
@@ -178,7 +194,7 @@ class Game extends Component {
           />
         ))}
         </div>
-        <div className="paddle-overlay">
+        <div className="paddle-overlay" style={{ width: '100%', height: window.innerHeight }}>
           <div
             className="paddle"
             style={{
