@@ -117,7 +117,7 @@ class Game extends Component {
   }
   startTimer() {
     this.timer = new TaskTimer(1000);
-    const blackListTicks = [10, 11, 29, 30]
+    const blackListTicks = [10, 11, 28, 29, 30]
     this.timer.on('tick', () => {
       const star = this.starProperties[getRandomInt(0, 4)]
       const starSize = mapScale(
@@ -129,7 +129,12 @@ class Game extends Component {
       )
       const starCount = [1,1,1,1,1,1,2,2,3,3][getRandomInt(0,9)]
       this.setState({ tick: this.timer.tickCount })
-      if (this.timer.tickCount === 30) this.timer.stop()
+      if (this.timer.tickCount === 30) {
+        setTimeout(() => {
+          this.gameOver()
+        }, 200)
+        this.timer.stop()
+      }
       if (!blackListTicks.includes(this.timer.tickCount)) {
         const pos = getRandomInt(0, window.innerWidth - starSize * starCount)
         this.setState(prev => ({
@@ -153,6 +158,10 @@ class Game extends Component {
 
   collectStar = score => {
     this.setState(prev => ({ score: prev.score + score }))
+  }
+
+  gameOver = () => {
+    this.props.gameOver()
   }
 
   shouldCollectedByPaddle = (starY1, starY2) => {
@@ -190,6 +199,7 @@ class Game extends Component {
             key={star.key}
             star={star}
             id={`star-${star.key}`}
+            gameOver={this.gameOver}
             collectStar={this.collectStar}
           />
         ))}

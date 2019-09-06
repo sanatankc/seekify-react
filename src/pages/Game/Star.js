@@ -58,6 +58,7 @@ class Star extends Component {
 
           if (props.shouldCollectedByPaddle(props.star.pos + x, x + props.star.pos + starSize * props.star.count)) {
             this.isAnimating = false
+            window.cancelAnimationFrame(this.animate)
             props.collectStar(props.star.property.score * props.star.count)
             tween({ from: 1, to: 0, duration: 400, ease: easing.anticipate }).start(o => {
               star.set({'opacity': o})
@@ -67,6 +68,10 @@ class Star extends Component {
 
         if (y >= innerHeight - starSize) {
           this.isAnimating = false
+          window.cancelAnimationFrame(this.animate)
+          setTimeout(() => {
+            this.props.gameOver()
+          }, 200)
         }
 
         // bounce
@@ -81,7 +86,7 @@ class Star extends Component {
 
         this.x += this.dx
         this.y += this.dy
-        requestAnimationFrame(this.animate)
+        this.animationLoop = requestAnimationFrame(this.animate)
       }
     }
 

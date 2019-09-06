@@ -1,11 +1,25 @@
 @keyframes starsAnimate {
-  0% {fill:#5f31a8}
-  16.66% { fill: #C05146 }
-  33.32% { fill: #FFC91D }
-  49.98% {fill: #35A7FF}
-  66.64% {fill: #33CC66}
-  83.3% {fill: #FF76B4}
-  100% {fill:#5f31a8}
+  0% {
+    fill: #5f31a8;
+  }
+  16.66% {
+    fill: #c05146;
+  }
+  33.32% {
+    fill: #ffc91d;
+  }
+  49.98% {
+    fill: #35a7ff;
+  }
+  66.64% {
+    fill: #33cc66;
+  }
+  83.3% {
+    fill: #ff76b4;
+  }
+  100% {
+    fill: #5f31a8;
+  }
 }
 
 .main {
@@ -14,6 +28,7 @@
   background-color: #250e49;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 .stars-container {
   position: relative;
@@ -60,13 +75,14 @@
   justify-content: center;
   align-items: center;
   color: #fff;
-  box-shadow: 0px 7.6px #501DA0;
+  box-shadow: 0px 7.6px #501da0;
   cursor: pointer;
   transition: 0.2s box-shadow ease-in-out;
   font-family: Calibre;
   font-size: 20px;
+  user-select: none;
 }
 
 .lets-go-button:hover {
-  box-shadow: 0px 5px #501DA0;
+  box-shadow: 0px 5px #501da0;
 }
