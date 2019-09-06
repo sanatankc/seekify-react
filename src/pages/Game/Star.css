@@ -13,3 +13,57 @@
 .pink-star path {
   fill: #ff76b4;
 }
+.submit-button .stroke-star path {
+  fill: transparent;
+  stroke-width: 1px;
+  stroke: #89878f;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+.submit-button {
+  fill: transparent;
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+}
+
+.star-bg-group {
+  transform-origin: center center;
+}
+.star-bg-group-1 {
+  animation: rotateStars 13s linear infinite;
+}
+
+.star-bg-group-2 {
+  animation: rotateStarsReverse 17s linear infinite;
+}
+
+.star-bg-group-3 {
+  animation: rotateStars 21s linear infinite;
+}
+
+.star-bg-group-4 {
+  animation: rotateStarsReverse 25s linear infinite;
+}
+
+.star-bg-group-5 {
+  animation: rotateStars 30s linear infinite;
+}
+
+@keyframes rotateStars {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateStarsReverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

@@ -8,9 +8,10 @@ import debounce from "../../debounce";
 function App() {
   useEffect(() => {
     window.addEventListener('resize', debounce(() => {
-      console.log(window.innerHeight)
-      document.querySelector('.main').style.height = `${window.innerHeight}px`
-      document.querySelector('.main-area').style.height = `${window.innerHeight}px`
+      const main = document.querySelector('.main')
+      const mainArea = document.querySelector('.main-area')
+      if (main) main.style.height = `${window.innerHeight}px`
+      if (mainArea) mainArea.style.height = `${window.innerHeight}px`
     }, 50))
   }, [])
   return (

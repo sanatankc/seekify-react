@@ -63,6 +63,12 @@ class Star extends Component {
             tween({ from: 1, to: 0, duration: 400, ease: easing.anticipate }).start(o => {
               star.set({'opacity': o})
             })
+            // Game over on last star
+            if (props.star.key === 28) {
+              setTimeout(() => {
+                this.props.gameOver()
+              }, 500)
+            }
           }
         }
 
@@ -71,7 +77,7 @@ class Star extends Component {
           window.cancelAnimationFrame(this.animate)
           setTimeout(() => {
             this.props.gameOver()
-          }, 200)
+          }, 500)
         }
 
         // bounce
