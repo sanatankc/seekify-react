@@ -49,7 +49,6 @@ class Game extends Component {
     { name: 'blue', score: 300, starSize: 88 },
     { name: 'green', score: 200, starSize: 105 },
     { name: 'pink', score: 100, starSize: 121 },
-
   ]
 
   componentDidMount() {

@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from 'react-router-dom'
 import { ReactComponent as StarsBG } from "../../svg/starsBG.svg";
 import { ReactComponent as Logo } from "../../svg/logo.svg";
 import "./Home.css";
+import debounce from "../../debounce";
 
 function App() {
+  useEffect(() => {
+    window.addEventListener('resize', debounce(() => {
+      console.log(window.innerHeight)
+      document.querySelector('.main').style.height = `${window.innerHeight}px`
+      document.querySelector('.main-area').style.height = `${window.innerHeight}px`
+    }, 50))
+  }, [])
   return (
     <>
       <div className="main" style={{ width: '100%', height: window.innerHeight }}>
